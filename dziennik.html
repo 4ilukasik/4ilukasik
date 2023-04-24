@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Dziennik praktyki zawodowej</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Dziennik praktyki zawodowej</h1>
+      <nav>
+        <ul>
+            <ul class="zakladki">
+                <li><button onclick="wyswietlZakladke('zakladka1')">Metryczka</button></li>
+                <li><button onclick="wyswietlZakladke('zakladka2')">Dziennik Zajec</button></li>
+                <li><button onclick="wyswietlZakladke('zakladka3')">Podsumowanie</button></li>
+              </ul>
+            </nav>
+              <div id="zakladka1" class="zawartosc-zakladki">
+                    <h2>Wprowadź dane ucznia i praktyki</h2>
+                    <form>
+                      <label>Imię:</label>
+                      <input type="text" id="imie" required><br>
+                      <label>Nazwisko:</label>
+                      <input type="text" id="nazwisko" required><br>
+                      <label>Klasa:</label>
+                      <input type="text" id="klasa" required><br>
+                      <label>Rok szkolny:</label>
+                      <input type="text" id="rok-szkolny" required><br>
+                      <label>Odbytej w:</label>
+                      <input type="text" id="odbytej-w" required><br>
+                      <label>Czas trwania praktyk:</label>
+                      <br>
+                      <label>Data rozpoczęcia:</label>
+                      <input type="date" id="data-rozpoczecia" required>
+                      <br>
+                      <label>Data zakończenia:</label>
+                      <input type="date" id="data-zakonczenia" required>
+                      <br><br>
+                      <button type="button" onclick="wyswietlWyniki()">Zatwierdź</button>
+                    </form>
+                  </div>
+                  <div id="wyniki" class="zawartosc-zakladki"></div>
+              </div>
+              
+              <div id="zakladka2" class="zawartosc-zakladki">
+                
+                <h2>Dziennik Praktyki Zawodowej</h2>
+        <form>
+          <h3>Wprowadz nowe zajecia</h3>
+          <label for="data">Wybierz datę zajęć:</label>
+          <input type="date" id="data" name="data" required><br><br>
+          <label for="dzial">Wybierz dział:</label>
+          <select id="dzial" name="dzial" required>
+            <option value="" disabled selected>Wybierz dział</option>
+            <option value="Dział 1">Dział 1</option>
+            <option value="Dział 2">Dział 2</option>
+            <option value="Dział 3">Dział 3</option>
+          </select><br><br>
+          <label for="temat">Wybierz temat:</label>
+          <select id="temat" name="temat" required>
+            <option value="" disabled selected>Wybierz temat</option>
+            <option  value="Temat 1">Temat 1</option>
+            <option value="Temat 2">Temat 2</option>
+            <option value="Temat 3">Temat 3</option>
+          </select><br><br>
+          <h3>Opiekun</h3>
+          <input type="radio" id="opiekun1" name="opiekun" value="Opiekun 1">
+          <label for="opiekun1">Pudzian</label><br>
+          <input type="radio" id="opiekun2" name="opiekun" value="Opiekun 2">
+          <label for="opiekun2">Paris Platynov</label><br>
+          <input type="radio" id="opiekun3" name="opiekun" value="Opiekun 3">
+          <label for="opiekun3">Owca WK</label><br><br>
+          <label for="sprawozdanie"><h4>Realizacja materiału:</h4></label><br>
+          Sprawozdanie: <textarea id="sprawozdanie" name="sprawozdanie" rows="10" cols="50"></textarea><br><br>
+          <label for="zrealizowano">Zrealizowano:</label>
+          <input type="checkbox" id="zrealizowano" name="zrealizowano"><br><br>
+          <label for="godziny">Ile godzin:</label>
+          <input type="number" id="godziny" name="godziny" min="1" max="7" required><br><br>
+          <label for="stopien">Stopień opanowania materiału: 1</label>
+          <input type="range" id="stopien" name="stopien" min="1" max="6" required>6<br><br>
+          <input type="button" value="Wyczyść" onclick="wyczyscFormularz()">
+          <button onclick="aktualizujSumy()">Zapisz dane</button>
+          <input type="submit" value="Dodaj" onclick="aktualizujSumy()">
+        </form>
+              </div>
+              
+              <div class="zawartosc-zakladki" id="zakladka3">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo enim eu neque congue ultrices. Etiam eleifend, quam eget consectetur consequat, turpis ex tempus justo, sit amet ultrices risus ex sit amet nunc.</p>
+                <table id="tabela-podsumowanie">
+                  <thead>
+                    <tr>
+                      <th>Nazwa modułu</th>
+                      <th>Ilość godzin zrealizowanych</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Temat 1</td>
+                      <td id="temat1">0</td>
+                    </tr>
+                    <tr>
+                      <td>Temat 2</td>
+                      <td id="temat2">0</td>
+                    </tr>
+                    <tr>
+                      <td>Temat 3</td>
+                      <td id="temat3">0</td>
+                    </tr>
+                    <tr>
+                      <td>Suma</td>
+                      <td id="suma">0</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Pozostało do zrealizowania: <span id="pozostalo">150</span> godzin.</p>
+                <p>Proponowana ocena na bazie ilości godzin, które nam zostały: <span id="ocena">6</span>.</p>
+              </div>
+              
+      </div>
+      <footer>
+        <p>@ Dawid Lukasik XXI w.</p>
+      </footer>
+    </header>
+
+    <script>
+
+function wyczyscFormularz() {
+  var inputs = document.getElementsByTagName("input"); 
+  for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i].type == "text" || inputs[i].type == "email" || inputs[i].type == "textarea") { // sprawdzenie typu pola
+      inputs[i].value = ""; 
+    }
+  }
+  document.getElementById("opis-problemu").value = "";
+}
+
+    function wyswietlWyniki() {
+        const imie = document.getElementById("imie").value;
+        const nazwisko = document.getElementById("nazwisko").value;
+        const klasa = document.getElementById("klasa").value;
+        const rokSzkolny = document.getElementById("rok-szkolny").value;
+        const odbytejW = document.getElementById("odbytej-w").value;
+        const dataRozpoczecia = document.getElementById("data-rozpoczecia").value;
+        const dataZakonczenia = document.getElementById("data-zakonczenia").value;
+        const wynikiDiv = document.getElementById("wyniki");
+      
+        const imieINazwisko = imie + " " + nazwisko;
+        const odDo = "W terminie od " + dataRozpoczecia + " do " + dataZakonczenia + ".";
+        const tekst = "Dane ucznia: " + imieINazwisko + ", " + klasa + " " + rokSzkolny + ", " + odbytejW + ", " + odDo;
+      
+        wynikiDiv.innerHTML = tekst + '<br><button onclick="edytujFormularz()">Edytuj</button>';
+        document.getElementById("zakladka1").style.display = "none";
+        document.getElementById("wyniki").style.display = "block";
+        
+      }
+      
+      function wyswietlZakladke(nazwaZakladki) {
+  var i;
+  var zawartoscZakladek = document.getElementsByClassName("zawartosc-zakladki");
+  for (i = 0; i < zawartoscZakladek.length; i++) {
+    zawartoscZakladek[i].classList.remove("active");
+    
+    
+  }
+  document.getElementById(nazwaZakladki).classList.add("active");
+  zapiszOpis();
+}
+
+function zapisz_dane() {
+  var opis = document.getElementById("opis").value;
+  var godziny = parseInt(document.getElementById("godziny").value) || 0;
+  var temat = document.getElementById("temat").value;
+
+  var table = document.getElementById("tabela");
+  var row = table.insertRow(-1);
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  cell1.innerHTML = opis;
+  cell2.innerHTML = godziny;
+  cell3.innerHTML = temat;
+
+  oblicz_sume_godzin();
+}
+
+function zapiszOpis() {
+  let tabela = generujTabele();
+  let stopnieSuma = obliczSume('stopien');
+  let godzinySuma = obliczSume('godziny');
+  document.getElementById('podsumowanie').innerHTML = tabela;
+  document.getElementById('suma-stopni').textContent = stopnieSuma;
+  document.getElementById('suma-godzin').textContent = godzinySuma;
+}
+function generujTabele(dane) {
+  var tabela = document.createElement("table");
+  tabela.classList.add("tabela-podsumowanie");
+
+  // generowanie nagłówka tabeli
+  var naglowek = tabela.createTHead();
+  var wierszNaglowka = naglowek.insertRow();
+
+  var cel1 = wierszNaglowka.insertCell();
+  cel1.textContent = "Data";
+
+  var cel2 = wierszNaglowka.insertCell();
+  cel2.textContent = "Dział";
+
+  var cel3 = wierszNaglowka.insertCell();
+  cel3.textContent = "Temat";
+
+  var cel4 = wierszNaglowka.insertCell();
+  cel4.textContent = "Opiekun";
+
+  var cel5 = wierszNaglowka.insertCell();
+  cel5.textContent = "Godziny";
+
+  var cel6 = wierszNaglowka.insertCell();
+  cel6.textContent = "Stopień zaawansowania";
+
+  var cel7 = wierszNaglowka.insertCell();
+  cel7.textContent = "Sprawozdanie";
+
+  var cel8 = wierszNaglowka.insertCell();
+  cel8.textContent = "Zrealizowano";
+
+  // generowanie wierszy z danymi
+  var cialo = tabela.createTBody();
+  for (var i = 0; i < dane.length; i++) {
+    var wiersz = cialo.insertRow();
+
+    var cel1 = wiersz.insertCell();
+    cel1.textContent = dane[i].data;
+
+    var cel2 = wiersz.insertCell();
+    cel2.textContent = dane[i].dzial;
+
+    var cel3 = wiersz.insertCell();
+    cel3.textContent = dane[i].temat;
+
+    var cel4 = wiersz.insertCell();
+    cel4.textContent = dane[i].opiekun;
+
+    var cel5 = wiersz.insertCell();
+    cel5.textContent = dane[i].godziny;
+
+    var cel6 = wiersz.insertCell();
+    cel6.textContent = dane[i].stopien;
+
+    var cel7 = wiersz.insertCell();
+    cel7.textContent = dane[i].sprawozdanie;
+
+    var cel8 = wiersz.insertCell();
+    if (dane[i].zrealizowano) {
+      cel8.textContent = "Tak";
+    } else {
+      cel8.textContent = "Nie";
+    }
+  }
+
+  return tabela;
+}
+
+function aktualizujPodsumowanie() {
+  // Pobierz wartości z formularza
+  const temat1 = parseInt(document.getElementById("temat1").value) || 0;
+  const temat2 = parseInt(document.getElementById("temat2").value) || 0;
+  const temat3 = parseInt(document.getElementById("temat3").value) || 0;
+
+  // Oblicz sumę i wartość pozostałą
+  const suma = temat1 + temat2 + temat3;
+  const pozostalo = 150 - suma;
+
+  // Zaktualizuj wartości w podsumowaniu
+  document.getElementById("suma").textContent = suma;
+  document.getElementById("pozostalo").textContent = pozostalo;
+}
+
+// Dodaj event listener do formularza
+const formularz = document.getElementById("dziennik-formularz");
+formularz.addEventListener("submit", (event) => {
+  event.preventDefault(); // Zablokuj domyślne zachowanie formularza
+  aktualizujPodsumowanie(); // Wywołaj funkcję aktualizacji
+});
+
+function aktualizujSumy(event) {
+  event.preventDefault();
+  
+  // aktualizuj sumę godzin
+  let sum = 0;
+  const godziny = document.querySelectorAll('.godziny');
+  godziny.forEach(function(element) {
+    sum += parseFloat(element.innerHTML);
+  });
+  document.querySelector('#suma-godzin').innerHTML = sum.toFixed(2);
+
+  // aktualizuj pozostałą liczbę godzin
+  const pozostalo = 150 - sum;
+  document.querySelector('#pozostalo-godzin').innerHTML = pozostalo.toFixed(2);
+
+  // aktualizuj wprowadzone godziny tematów
+  document.querySelector('#input-temat1').value = parseFloat(document.querySelector('#temat1').innerHTML).toFixed(2);
+  document.querySelector('#input-temat2').value = parseFloat(document.querySelector('#temat2').innerHTML).toFixed(2);
+  document.querySelector('#input-temat3').value = parseFloat(document.querySelector('#temat3').innerHTML).toFixed(2);
+}
+
+window.addEventListener('load', aktualizujSumy);
+
+
+
+      
+
+
+    </script>
+    </body>
+    </html>
+    
+   
